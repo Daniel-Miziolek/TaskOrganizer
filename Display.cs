@@ -5,7 +5,7 @@ namespace TaskOrganizer;
 public class Display
 {
     public static string MainChoice()
-    {    
+    {
         return AnsiConsole.Prompt(
                    new SelectionPrompt<string>()
                        .Title("Choose one of the options")
@@ -15,5 +15,23 @@ public class Display
                         "Add Task", "Update Task", "Delete Task", "Close the program"
                        ])
                ); ;
+    }
+
+    public static void DisplayTasksList()
+    {
+        var table = new Table().Border(TableBorder.Heavy);
+
+        table.AddColumn("ID");
+        table.AddColumn("TITLE");
+        table.AddColumn("DESCRIPTION");
+        table.AddColumn("PRIORITY");
+        table.AddColumn("IS FINISH");
+
+        foreach (var task in TaskData.ListOfTasks)
+        {
+            table.AddRow(task.Id.ToString(), task.Title, task.Descritpion, task.TaskPriority.ToString(), task.IsFinish.ToString());
+        }
+
+        AnsiConsole.Write(table);
     }
 }

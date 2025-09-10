@@ -9,9 +9,9 @@ namespace TaskOrganizer
         {
             while (true)
             {
-                TaskManager.DisplayTasksList();
+                Display.DisplayTasksList();
                 
-                Task task = new Task();
+                Task task = new();
 
                 switch (Display.MainChoice())
                 {

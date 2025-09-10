@@ -12,6 +12,8 @@ public class Task
 
     public void AddTask()
     {
+        Id = TaskData.ListOfTasks.Count + 1;
+
         Title = AnsiConsole.Prompt(
             new TextPrompt<string>("Enter title of your task: "));
 
@@ -23,7 +25,9 @@ public class Task
                 .Title("Choose priority of your task")
                 .PageSize(10)
                 .MoreChoicesText("Move up and down to reveal more options")
-                .AddChoices(Enum.GetValues<TaskPriority>()));        
+                .AddChoices(Enum.GetValues<TaskPriority>()));
+
+        TaskData.ListOfTasks.Add(this);
     }
 
     public void UpdateTask()
@@ -38,6 +42,6 @@ public class Task
 
     public override string ToString()
     {
-        return $"Title: {Title}, Descritpion: {Descritpion}, TaskPriority: {TaskPriority}, Is finished: {IsFinish}";
+        return $"Id: {Id} Title: {Title}, Descritpion: {Descritpion}, TaskPriority: {TaskPriority}, Is finished: {IsFinish}";
     }
 }
