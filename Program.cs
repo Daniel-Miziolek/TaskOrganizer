@@ -11,7 +11,7 @@ namespace TaskOrganizer
             {
                 Display.DisplayTasksList();
                 
-                Task task = new();
+                TaskItem task = new();
 
                 switch (Display.MainChoice())
                 {

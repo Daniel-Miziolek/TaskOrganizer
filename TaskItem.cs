@@ -3,7 +3,7 @@ using Spectre.Console;
 
 namespace TaskOrganizer;
 
-public class Task
+public class TaskItem
 {
     public int Id { get; set; }
     public string Title { get; set; }
@@ -19,10 +19,10 @@ public class Task
             new TextPrompt<string>("Enter title of your task: "));
 
         Description = AnsiConsole.Prompt(
-             new TextPrompt<string>("Enter descrtiption of your task"));
+            new TextPrompt<string>("Enter descrtiption of your task"));
 
         TaskPriority = AnsiConsole.Prompt(
-             new SelectionPrompt<TaskPriority>()
+            new SelectionPrompt<TaskPriority>()
                 .Title("Choose priority of your task")
                 .PageSize(10)
                 .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
