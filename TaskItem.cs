@@ -9,11 +9,11 @@ public class TaskItem
     public string Title { get; set; }
     public string Description { get; set; }
     public TaskPriority TaskPriority { get; set; }
-    public bool IsFinish = false;
+    public bool IsFinish { get; set; }
 
-    public void AddTask()
+    public void AddTask(List<TaskItem> tasks)
     {
-        Id = TaskData.ListOfTasks.Count + 1;
+        Id = tasks.Count + 1;
 
         Title = AnsiConsole.Prompt(
             new TextPrompt<string>("Enter title of your task: "));
@@ -28,7 +28,9 @@ public class TaskItem
                 .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                 .AddChoices(Enum.GetValues<TaskPriority>()));
 
-        TaskData.ListOfTasks.Add(this);
+        IsFinish = false;
+
+        tasks.Add(this);
     }
 
     public void UpdateTask()
@@ -36,27 +38,36 @@ public class TaskItem
         Console.WriteLine("You choiced UpdateTask option");
     }
 
-    public void DeleteTask()
+    public void DeleteTask(List<TaskItem> tasks)
     {
-        var ides = TaskData.ListOfTasks
-            .Select(t => t.Id)
-            .ToList();
+        if (tasks.Count > 0)
+        {
+            var ides = tasks
+                .Select(t => t.Id)
+                .ToList();
 
-        var taskDeleteId = AnsiConsole.Prompt(
-            new SelectionPrompt<int>()
-                .Title("Choose task to delete")
-                .MoreChoicesText("[grey](Move up and down to reval more tasks)[/]")
-                .AddChoices(ides));
+            var taskDeleteId = AnsiConsole.Prompt(
+                new SelectionPrompt<int>()
+                    .Title("Choose task to delete")
+                    .MoreChoicesText("[grey](Move up and down to reval more tasks)[/]")
+                    .AddChoices(ides));
 
-        TaskData.ListOfTasks.RemoveAll(x => x.Id == taskDeleteId);
-        CheckId();
+            tasks.RemoveAll(x => x.Id == taskDeleteId);
+            CheckId(tasks);
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[red]Your tasks list is empty[/]. Press any key to conitinue");
+            Console.ReadKey();
+            return;            
+        }        
     }
 
-    private void CheckId()
+    private void CheckId(List<TaskItem> tasks)
     {
-        for (int i = 0; i < TaskData.ListOfTasks.Count; i++)
+        for (int i = 0; i < tasks.Count; i++)
         {
-            TaskData.ListOfTasks[i].Id = i + 1;
+            tasks[i].Id = i + 1;
         }
     }
 

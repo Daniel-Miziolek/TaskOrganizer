@@ -16,7 +16,7 @@ public class Display
                 ]));
     }
 
-    public static void DisplayTasksList()
+    public static void DisplayTasksList(List<TaskItem> tasks)
     {
         var table = new Table().Border(TableBorder.Heavy);
 
@@ -26,7 +26,7 @@ public class Display
         table.AddColumn("PRIORITY");
         table.AddColumn("IS FINISH");
 
-        foreach (var task in TaskData.ListOfTasks)
+        foreach (var task in tasks)
         {
             table.AddRow(task.Id.ToString(), task.Title, task.Description, task.TaskPriority.ToString(), task.IsFinish.ToString());
         }

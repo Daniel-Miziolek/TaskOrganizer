@@ -7,23 +7,30 @@ namespace TaskOrganizer
     {
         static void Main()
         {
+            var taskData = TaskData.LoadFromFile();
+
             while (true)
             {
-                Display.DisplayTasksList();
-                
+                Display.DisplayTasksList(taskData.ListOfTasks);
+
                 TaskItem task = new();
 
                 switch (Display.MainChoice())
                 {
                     case "Add Task":
-                        task.AddTask();
-                        Console.WriteLine(task);
+                        task.AddTask(taskData.ListOfTasks);
+                        taskData.SaveToFile();
+                        Console.Clear();
                         break;
                     case "Update Task":
                         task.UpdateTask();
+                        taskData.SaveToFile();
+                        Console.Clear();
                         break;
                     case "Delete Task":
-                        task.DeleteTask();
+                        task.DeleteTask(taskData.ListOfTasks);
+                        taskData.SaveToFile();
+                        Console.Clear();
                         break;
                     case "Close the program":
                         return;
