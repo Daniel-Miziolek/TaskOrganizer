@@ -23,7 +23,7 @@ namespace TaskOrganizer
                         Console.Clear();
                         break;
                     case "Update Task":
-                        task.UpdateTask();
+                        task.UpdateTask(taskData.ListOfTasks);
                         taskData.SaveToFile();
                         Console.Clear();
                         break;

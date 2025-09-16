@@ -33,34 +33,65 @@ public class TaskItem
         tasks.Add(this);
     }
 
-    public void UpdateTask()
+    public void UpdateTask(List<TaskItem> tasks)
     {
-        Console.WriteLine("You choiced UpdateTask option");
+        if (!tasks.Any())
+        {
+            AnsiConsole.MarkupLine("[red]Your tasks list is empty[/]. Press any key to continue.");
+            Console.ReadKey();
+            return;
+        }
+
+        var taskToEdit = AnsiConsole.Prompt(
+            new SelectionPrompt<TaskItem>()
+                .Title("Choose task to edit")
+                .UseConverter(t => $"{t.Id}: {t.Title}")
+                .AddChoices(tasks));
+
+        taskToEdit.Title = AnsiConsole.Prompt(
+            new TextPrompt<string>("Enter title of your task: ")
+                .AllowEmpty()
+                .DefaultValue(taskToEdit.Title));
+
+        taskToEdit.Description = AnsiConsole.Prompt(
+            new TextPrompt<string>("Enter description of your task: ")
+                .AllowEmpty()
+                .DefaultValue(taskToEdit.Description));
+
+        taskToEdit.TaskPriority = AnsiConsole.Prompt(
+            new SelectionPrompt<TaskPriority>()
+                .PageSize(10)
+                .Title("Choose priority of your task")
+                .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
+                .AddChoices(Enum.GetValues<TaskPriority>()
+                    .OrderBy(p => p != taskToEdit.TaskPriority)));
+        
+        taskToEdit.IsFinish = AnsiConsole.Prompt(
+            new TextPrompt<bool>("Is the task finished?: ")
+                .AddChoices(new[] { true, false})
+                .DefaultValue(taskToEdit.IsFinish)
+                .WithConverter(choice => choice ? "Finished" : "Not finished")
+                .AllowEmpty());
     }
 
     public void DeleteTask(List<TaskItem> tasks)
     {
-        if (tasks.Count > 0)
+        if (!tasks.Any())
         {
-            var ides = tasks
-                .Select(t => t.Id)
-                .ToList();
-
-            var taskDeleteId = AnsiConsole.Prompt(
-                new SelectionPrompt<int>()
-                    .Title("Choose task to delete")
-                    .MoreChoicesText("[grey](Move up and down to reval more tasks)[/]")
-                    .AddChoices(ides));
-
-            tasks.RemoveAll(x => x.Id == taskDeleteId);
-            CheckId(tasks);
-        }
-        else
-        {
-            AnsiConsole.MarkupLine("[red]Your tasks list is empty[/]. Press any key to conitinue");
+            AnsiConsole.MarkupLine("[red]Your tasks list is empty[/]. Press any key to continue.");
             Console.ReadKey();
-            return;            
-        }        
+            return;
+        }
+
+        var toDelete = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<TaskItem>()
+                .Title("Choose task(s) to delete")
+                .UseConverter(t => $"{t.Id}: {t.Title}")
+                .MoreChoicesText("[grey](Move up and down to reveal more tasks)[/]")
+                .AddChoices(tasks));
+
+        tasks.RemoveAll(t => toDelete.Contains(t));
+        CheckId(tasks);             
     }
 
     private void CheckId(List<TaskItem> tasks)
@@ -71,8 +102,5 @@ public class TaskItem
         }
     }
 
-    public override string ToString()
-    {
-        return $"Id: {Id} Title: {Title}, Description: {Description}, TaskPriority: {TaskPriority}, Is finished: {IsFinish}";
-    }
+    public override string ToString() => $"Id: {Id} Title: {Title}, Description: {Description}, TaskPriority: {TaskPriority}, Is finished: {IsFinish}"; 
 }
