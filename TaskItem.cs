@@ -65,13 +65,12 @@ public class TaskItem
                 .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                 .AddChoices(Enum.GetValues<TaskPriority>()
                     .OrderBy(p => p != taskToEdit.TaskPriority)));
-        
+
         taskToEdit.IsFinish = AnsiConsole.Prompt(
-            new TextPrompt<bool>("Is the task finished?: ")
-                .AddChoices(new[] { true, false})
-                .DefaultValue(taskToEdit.IsFinish)
-                .WithConverter(choice => choice ? "Finished" : "Not finished")
-                .AllowEmpty());
+            new SelectionPrompt<bool>()
+                .Title("Is the task finished?")
+                .AddChoices(taskToEdit.IsFinish, !taskToEdit.IsFinish)
+                .UseConverter(choice => choice ? "Finished" : "Not finished"));
     }
 
     public void DeleteTask(List<TaskItem> tasks)
