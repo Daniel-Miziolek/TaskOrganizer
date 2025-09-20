@@ -14,21 +14,22 @@ namespace TaskOrganizer
                 Display.DisplayTasksList(taskData.ListOfTasks);
 
                 TaskItem task = new();
+                TaskService taskService = new();
 
                 switch (Display.MainChoice())
                 {
                     case "Add Task":
-                        task.AddTask(taskData.ListOfTasks);
+                        taskService.AddTask(taskData.ListOfTasks);
                         taskData.SaveToFile();
                         Console.Clear();
                         break;
                     case "Update Task":
-                        task.UpdateTask(taskData.ListOfTasks);
+                        taskService.UpdateTask(taskData.ListOfTasks);
                         taskData.SaveToFile();
                         Console.Clear();
                         break;
                     case "Delete Task":
-                        task.DeleteTask(taskData.ListOfTasks);
+                        taskService.DeleteTask(taskData.ListOfTasks);
                         taskData.SaveToFile();
                         Console.Clear();
                         break;
