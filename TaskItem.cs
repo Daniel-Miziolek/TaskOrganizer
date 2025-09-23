@@ -1,6 +1,3 @@
-using System.Linq.Expressions;
-using Spectre.Console;
-
 namespace TaskOrganizer;
 
 public class TaskItem

@@ -12,7 +12,7 @@ public class Display
                 .PageSize(10)
                 .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                 .AddChoices([
-                    "Add Task", "Update Task", "Delete Task", "Close the program"
+                    "Add Task", "Update Task", "Delete Task", "Sort Table", "Close the program"
                 ]));
     }
 

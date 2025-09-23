@@ -1,5 +1,4 @@
-﻿using Spectre.Console;
-using Spectre.Console.Cli;
+﻿using System.ComponentModel;
 
 namespace TaskOrganizer
 {
@@ -31,6 +30,10 @@ namespace TaskOrganizer
                     case "Delete Task":
                         taskService.DeleteTask(taskData.ListOfTasks);
                         taskData.SaveToFile();
+                        Console.Clear();
+                        break;
+                    case "Sort Table":
+                        taskService.SortTable(taskData.ListOfTasks);
                         Console.Clear();
                         break;
                     case "Close the program":

@@ -89,6 +89,38 @@ class TaskService
         CheckId(tasks);
     }
 
+    public void SortTable(List<TaskItem> tasks)
+    {
+        if (!tasks.Any())
+        {
+            AnsiConsole.MarkupLine("[red]Your tasks list is empty[/]. Press any key to continue.");
+            Console.ReadKey();
+            return;
+        }
+
+        var sortOptions = new Dictionary<string, Func<TaskItem, object>> {
+            { "Id", t => t.Id },
+            { "Title", t => t.Title },
+            { "Description", t => t.Description },
+            { "TaskPriority", t => t.TaskPriority },
+            { "IsFinish", t => t.IsFinish }
+        };
+
+        var propertyToSortBy = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Choose category to sort by")
+                .AddChoices(sortOptions.Keys));
+
+        var descending = AnsiConsole.Confirm("Sort descending?");
+
+        var sortedList = descending
+            ? tasks.OrderByDescending(sortOptions[propertyToSortBy]).ToList()
+            : tasks.OrderBy(sortOptions[propertyToSortBy]).ToList();
+
+        Display.DisplayTasksList(sortedList);
+        Console.ReadKey();
+    }
+
     private void CheckId(List<TaskItem> tasks)
     {
         for (int i = 0; i < tasks.Count; i++)
@@ -96,5 +128,4 @@ class TaskService
             tasks[i].Id = i + 1;
         }
     }
-
 }
