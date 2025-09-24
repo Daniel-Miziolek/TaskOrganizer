@@ -3,8 +3,8 @@ namespace TaskOrganizer;
 public class TaskItem
 {
     public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public TaskPriority TaskPriority { get; set; }
     public bool IsFinish { get; set; }
 
